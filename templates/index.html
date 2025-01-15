@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Üretim Hata Kaydı</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        form input, form select, form button {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #0056b3;
+        }
+        .actions {
+            text-align: center;
+        }
+        .actions a {
+            text-decoration: none;
+            color: #007bff;
+            margin-right: 10px;
+        }
+        .actions a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Üretim Hata Kayıtları</h1>
+    </header>
+    <main>
+        <!-- Yeni Hata Kaydı Formu -->
+        <form method="POST" action="/uretim/hata">
+            <input type="text" name="son_haneler" placeholder="Seri No Son Haneleri" required>
+            <select name="hata" required>
+                <option value="" disabled selected>Hata Türünü Seçin</option>
+                {% for hata in hata_listesi %}
+                <option value="{{ hata }}">{{ hata }}</option>
+                {% endfor %}
+            </select>
+            <select name="aciklama" required>
+                <option value="" disabled selected>Açıklama Seçin</option>
+                {% for aciklama in aciklama_listesi %}
+                <option value="{{ aciklama }}">{{ aciklama }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Ekle</button>
+        </form>
+
+        <!-- Filtreleme Formu -->
+        <form method="GET" action="/uretim/hata">
+            <label for="tarih">Tarih:</label>
+            <input type="date" name="tarih" id="tarih">
+            <label for="hata">Hata Türü:</label>
+            <select name="hata" id="hata">
+                <option value="" disabled selected>Hata Türünü Seçin</option>
+                {% for hata in hata_listesi %}
+                <option value="{{ hata }}">{{ hata }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filtrele</button>
+        </form>
+
+        <!-- Hata Kayıtları Tablosu -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Seri Numarası</th>
+                    <th>Hata</th>
+                    <th>Tarih</th>
+                    <th>Açıklama</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for seri in seriler %}
+                <tr>
+                    <td>{{ seri.seri_numara }}</td>
+                    <td>{{ seri.hata }}</td>
+                    <td>{{ seri.tarih }}</td>
+                    <td>{{ seri.aciklama }}</td>
+                    <td class="actions">
+                        <a href="/delete/{{ seri.id }}">Sil</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Excel İndirme Butonu -->
+        <form method="POST" action="/download">
+            <button type="submit">Excel'e Aktar</button>
+        </form>
+    </main>
+</body>
+</html>
