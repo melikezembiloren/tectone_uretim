@@ -9,13 +9,15 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
+            background-color: #f4f6f9;
+            color: #333;
         }
         header {
-            background-color: #343a40;
+            background-color: #4CAF50; /* Daha kullanıcı dostu yeşil renk */
             color: white;
-            padding: 10px 20px;
+            padding: 15px 20px;
             text-align: center;
+            font-size: 24px;
         }
         main {
             padding: 20px;
@@ -24,6 +26,8 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
         }
         table, th, td {
             border: 1px solid #ddd;
@@ -33,37 +37,46 @@
             text-align: left;
         }
         th {
-            background-color: #007bff;
+            background-color: #4CAF50; /* Başlıklar için uyumlu renk */
             color: white;
         }
         form {
             margin-bottom: 20px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
         form input, form select, form button {
             padding: 10px;
             margin-right: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 14px;
         }
         form button {
-            background-color: #007bff;
+            background-color: #4CAF50;
             color: white;
             border: none;
             cursor: pointer;
         }
         form button:hover {
-            background-color: #0056b3;
+            background-color: #45a049;
         }
         .actions {
             text-align: center;
         }
         .actions a {
             text-decoration: none;
-            color: #007bff;
+            color: #4CAF50;
             margin-right: 10px;
+            font-weight: bold;
         }
         .actions a:hover {
             text-decoration: underline;
+        }
+        .filter-section {
+            margin-bottom: 30px;
         }
     </style>
 </head>
@@ -77,32 +90,55 @@
             <input type="text" name="son_haneler" placeholder="Seri No Son Haneleri" required>
             <select name="hata" required>
                 <option value="" disabled selected>Hata Türünü Seçin</option>
-                {% for hata in hata_listesi %}
-                <option value="{{ hata }}">{{ hata }}</option>
-                {% endfor %}
+                <option value="Sinyal Yok">Sinyal Yok</option>
+                <option value="Ekran Açılmıyor">Ekran Açılmıyor</option>
+                <option value="Panel Kırık">Panel Kırık</option>
+                <option value="OC Kırık">OC Kırık</option>
+                <option value="Arka Kapak Oturmamış">Arka Kapak Oturmamış</option>
+                <option value="Hoparlörden Ses Gelmiyor">Hoparlörden Ses Gelmiyor</option>
+                <option value="Ses Cızırtılı">Ses Cızırtılı</option>
+                <option value="Sağ Hoparlörde Ses Yok">Sağ Hoparlörde Ses Yok</option>
+                <option value="Sol Hoparlörde Ses Yok">Sol Hoparlörde Ses Yok</option>
+                <option value="Metal Arka Kapak Çizik">Metal Arka Kapak Çizik</option>
+                <option value="Tuner Yok/Çalışmıyor">Tuner Yok/Çalışmıyor</option>
+                <option value="Diğer">Diğer</option>
             </select>
-            <select name="aciklama" required>
-                <option value="" disabled selected>Açıklama Seçin</option>
-                {% for aciklama in aciklama_listesi %}
-                <option value="{{ aciklama }}">{{ aciklama }}</option>
-                {% endfor %}
+            <select name="yapilan islem" required>
+                <option value="" disabled selected>Yapılan İşlemi Seçin</option>
+                <option value="Anakart Değiştirildi">Anakart Değiştirildi</option>
+                <option value="LVDS Kablosu Değiştirildi">LVDS Kablosu Değiştirildi</option>
+                <option value="LVDS Kablosu Düzgün Takıldı">LVDS Kablosu Düzgün Takıldı</option>
+                <option value="Hoparlör Kablosu Takıldı">Hoparlör Kablosu Takıldı</option>
+                <option value="Hoparlör Değiştirildi">Hoparlör Değiştirildi</option>
+                <option value="Diğer">Diğer</option>
             </select>
             <button type="submit">Ekle</button>
         </form>
 
         <!-- Filtreleme Formu -->
-        <form method="GET" action="/uretim/hata">
-            <label for="tarih">Tarih:</label>
-            <input type="date" name="tarih" id="tarih">
-            <label for="hata">Hata Türü:</label>
-            <select name="hata" id="hata">
-                <option value="" disabled selected>Hata Türünü Seçin</option>
-                {% for hata in hata_listesi %}
-                <option value="{{ hata }}">{{ hata }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit">Filtrele</button>
-        </form>
+        <div class="filter-section">
+            <form method="GET" action="/uretim/hata">
+                <label for="tarih">Tarih:</label>
+                <input type="date" name="tarih" id="tarih">
+                <label for="hata">Hata Türü:</label>
+                <select name="hata" id="hata">
+                    <option value="" disabled selected>Hata Türünü Seçin</option>
+                    <option value="Sinyal Yok">Sinyal Yok</option>
+                    <option value="Ekran Açılmıyor">Ekran Açılmıyor</option>
+                    <option value="Panel Kırık">Panel Kırık</option>
+                    <option value="OC Kırık">OC Kırık</option>
+                    <option value="Arka Kapak Oturmamış">Arka Kapak Oturmamış</option>
+                    <option value="Hoparlörden Ses Gelmiyor">Hoparlörden Ses Gelmiyor</option>
+                    <option value="Ses Cızırtılı">Ses Cızırtılı</option>
+                    <option value="Sağ Hoparlörde Ses Yok">Sağ Hoparlörde Ses Yok</option>
+                    <option value="Sol Hoparlörde Ses Yok">Sol Hoparlörde Ses Yok</option>
+                    <option value="Metal Arka Kapak Çizik">Metal Arka Kapak Çizik</option>
+                    <option value="Tuner Yok/Çalışmıyor">Tuner Yok/Çalışmıyor</option>
+                    <option value="Diğer">Diğer</option>
+                </select>
+                <button type="submit">Filtrele</button>
+            </form>
+        </div>
 
         <!-- Hata Kayıtları Tablosu -->
         <table>
@@ -111,7 +147,7 @@
                     <th>Seri Numarası</th>
                     <th>Hata</th>
                     <th>Tarih</th>
-                    <th>Açıklama</th>
+                    <th>Yapılan İşlem</th>
                     <th>İşlemler</th>
                 </tr>
             </thead>

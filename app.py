@@ -3,9 +3,14 @@ from datetime import datetime
 from io import BytesIO
 from openpyxl import Workbook
 from google.cloud import firestore
+from dotenv import load_dotenv
+import os
 
-# Firestore istemcisi
-service_account_path = r"C:\Users\melike.zembiloren\Desktop\uretim_app\serviceAccountKey.json"
+# .env dosyasındaki çevresel değişkenleri yükle
+load_dotenv()
+
+# Çevresel değişkenden servis hesabı dosyasının yolunu al
+service_account_path = os.getenv(r'GOOGLE_APPLICATION_CREDENTIALS')
 db = firestore.Client.from_service_account_json(service_account_path)
 
 app = Flask(__name__)
@@ -14,9 +19,9 @@ app = Flask(__name__)
 def index():
     if request.method == "POST":
         # Yeni hata kaydı ekle
-        hata = request.form.get("hata")
-        son_haneler = request.form.get("son_haneler")
-        aciklama = request.form.get("aciklama")
+        hata = request.form.get("hata", "")
+        son_haneler = request.form.get("son_haneler", "")
+        aciklama = request.form.get("aciklama", "")
         tarih = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         seri_numara = f"TLA{son_haneler}"
 
